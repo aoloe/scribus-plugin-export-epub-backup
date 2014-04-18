@@ -23,7 +23,7 @@ class EpubExportDialog : public QDialog, Ui::EpubExportDialog
 {
 	Q_OBJECT
 	public:
-		EpubExportDialog( QWidget* parent = 0, ScribusDoc* doc = 0, const char* name = 0, bool modal = FALSE, Qt::WFlags fl = 0 );
+		EpubExportDialog( QWidget* parent = 0, ScribusDoc* doc = 0, const char* name = 0, bool modal = false, Qt::WindowFlags fl = 0 );
 		~EpubExportDialog();
         void setOptions(EpubExportOptions options) {this->options = options;}
         EpubExportOptions getOptions() {return options;}

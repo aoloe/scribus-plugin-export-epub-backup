@@ -24,7 +24,7 @@
 #include <QList>
 #include "ui/createrange.h" // for getting the page ranges
 
-EpubExportDialog::EpubExportDialog(QWidget* parent, ScribusDoc* doc, const char* name, bool modal, Qt::WFlags fl)
+EpubExportDialog::EpubExportDialog(QWidget* parent, ScribusDoc* doc, const char* name, bool modal, Qt::WindowFlags fl)
 	: QDialog (parent, fl),
 	  m_Doc(doc)
 {

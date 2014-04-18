@@ -43,7 +43,7 @@
 
 #include "ui/multiprogressdialog.h"
 
-#include "filezip.h"
+#include "third_party/zip/zip.h"
 
 #include "styles/styleset.h"
 #include "styles/paragraphstyle.h"
@@ -183,7 +183,8 @@ void EpubExport::addXhtml()
 	file.title = QString("Section %1").arg(section + 1, 4, 10, QChar('0')); // TODO: as soon as we have a TOC, take the title from the text
 	// passing somethign else then -1 to toString() adds indenting line breaks. we prefer to manually add
     // some breaks with getFixedXhtml()
-	epub->get()->add("OEBPS/Text/" + file.filename, getFixedXhtml(xhtmlDocument.toString(-1)), true);
+	// epub->get()->add("OEBPS/Text/" + file.filename, getFixedXhtml(xhtmlDocument.toString(-1)), true);
+    epub->add("OEBPS/Text/" + file.filename, getFixedXhtml(xhtmlDocument.toString(-1)));
 	xhtmlFile.append(file);
 
 	struct EPUBExportContentItem contentItem;
@@ -324,7 +325,8 @@ void EpubExport::exportCSS()
     wr += "}\n";
 
     // write the stylesheet
-	epub->get()->add("OEBPS/Styles/style.css", wr, true);
+	// epub->get()->add("OEBPS/Styles/style.css", wr, true);
+	epub->add("OEBPS/Styles/style.css", wr);
 
 	struct EPUBExportContentItem contentItem;
 	contentItem.id = "stylesheet";
@@ -731,7 +733,8 @@ void EpubExport::addImage(PageItem* docItem)
         {
             qDebug() << "standard file add";
             QFile file(fileinfo.filePath()); // TODO: if we already have a scimage we may have to change this
-            epub->get()->add("OEBPS/"+filepath, &file, true);
+            // epub->get()->add("OEBPS/"+filepath, &file, true);
+            // epub->add("OEBPS/"+filepath, &file);
         }
         else
         {

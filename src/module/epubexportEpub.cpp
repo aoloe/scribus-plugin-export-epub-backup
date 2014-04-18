@@ -29,8 +29,8 @@ EpubExportEpub::~EpubExportEpub()
 
 void EpubExportEpub::create()
 {
-    file = new FileZip(filename);
-    file->create();
+    file = new Zip();
+    file->createArchive(filename);
     
     // add mimetype to the current epub file
     // The mimetype file must be a text document in ASCII that contains the string application/epub+zip.
@@ -56,6 +56,11 @@ void EpubExportEpub::addUncompressed(QString filename, QString content)
 void EpubExportEpub::add(QString filename, QByteArray content)
 {
     file->add(filename, content, true);
+}
+
+void EpubExportEpub::add(QString filename, QFile file)
+{
+    file->addFile(filename, content, true);
 }
 
 void EpubExportEpub::addUncompressed(QString filename, QByteArray content)

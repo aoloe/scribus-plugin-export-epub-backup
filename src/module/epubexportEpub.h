@@ -15,7 +15,7 @@
 
 #include "scribusapi.h" // for SCRIBUS_API
 
-class FileZip;
+class Zip;
 
 class EpubExportEpub : public QObject
 {
@@ -25,7 +25,7 @@ public:
 	EpubExportEpub();
 	~EpubExportEpub();
 
-    FileZip* get() {return file;} // TODO: remove this as soon as the refactoring is over
+    Zip* get() {return file;} // TODO: remove this as soon as the refactoring is over
 
     void setFilename(QString filename) {this->filename = filename;}
 
@@ -37,7 +37,7 @@ public:
     void addUncompressed(QString filename, QString content);
     void addUncompressed(QString filename, QByteArray content);
 private:
-	FileZip *file;
+	Zip *file;
     QString filename;
 };
 
