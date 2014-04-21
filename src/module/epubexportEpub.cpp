@@ -17,7 +17,9 @@
 #include <QDebug>
 
 #include "module/epubexportEpub.h"
-#include "filezip.h"
+// #include "filezip.h"
+// #include "third_party/zip/zip.h"
+#include "module/epubexportZip.h"
 
 EpubExportEpub::EpubExportEpub()
 {
@@ -29,43 +31,48 @@ EpubExportEpub::~EpubExportEpub()
 
 void EpubExportEpub::create()
 {
-    file = new Zip();
+    file = new EpubExportZip();
     file->createArchive(filename);
     
     // add mimetype to the current epub file
     // The mimetype file must be a text document in ASCII that contains the string application/epub+zip.
     // It must also be uncompressed, unencrypted, and the first file in the ZIP archive.
-	file->add("mimetype", QString("application/epub+zip"), false);
+	addUncompressed("mimetype", QString("application/epub+zip"));
 }
 
+/*
 void EpubExportEpub::close()
 {
     file->close();
 }
+*/
 
 void EpubExportEpub::add(QString filename, QString content)
 {
-    file->add(filename, content, true);
+    file->addString(filename, content, getDefaultCompressionLevel(true));
 }
 
 void EpubExportEpub::addUncompressed(QString filename, QString content)
 {
-    file->add(filename, content, false);
+    // Q_ASSERT_X(content != "", "add to zip", "cannot discriminate between content and root in Zip");
+    file->addString(filename, content, getDefaultCompressionLevel(false));
 }
 
 void EpubExportEpub::add(QString filename, QByteArray content)
 {
-    file->add(filename, content, true);
+    file->addString(filename, content);
 }
 
+/*
 void EpubExportEpub::add(QString filename, QFile file)
 {
-    file->addFile(filename, content, true);
+    file->addFile(filename, content, getDefaultCompressionLevel(true));
 }
+*/
 
 void EpubExportEpub::addUncompressed(QString filename, QByteArray content)
 {
-    file->add(filename, content, false);
+    file->addFile(filename, content, false);
 }
 
 QDebug operator<<(QDebug dbg, const EpubExportEpub &epub)

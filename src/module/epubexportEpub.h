@@ -15,7 +15,9 @@
 
 #include "scribusapi.h" // for SCRIBUS_API
 
-class Zip;
+// class Zip;
+// class EpubExportZip;
+#include "module/epubexportZip.h"
 
 class EpubExportEpub : public QObject
 {
@@ -25,20 +27,22 @@ public:
 	EpubExportEpub();
 	~EpubExportEpub();
 
-    Zip* get() {return file;} // TODO: remove this as soon as the refactoring is over
-
     void setFilename(QString filename) {this->filename = filename;}
 
     void create();
-    void close();
+    // void close();
 
     void add(QString filename, QString content);
     void add(QString filename, QByteArray content);
     void addUncompressed(QString filename, QString content);
     void addUncompressed(QString filename, QByteArray content);
 private:
-	Zip *file;
+	EpubExportZip *file;
     QString filename;
+    inline EpubExportZip::CompressionLevel getDefaultCompressionLevel(bool compressing)
+    {
+        return compressing ? EpubExportZip::Deflate9 : EpubExportZip::Store;
+    }
 };
 
 QDebug operator<<(QDebug dbg, const EpubExportEpub &epub);

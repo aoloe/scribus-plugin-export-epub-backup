@@ -43,7 +43,7 @@
 
 #include "ui/multiprogressdialog.h"
 
-#include "third_party/zip/zip.h"
+// #include "third_party/zip/zip.h"
 
 #include "styles/styleset.h"
 #include "styles/paragraphstyle.h"
@@ -151,7 +151,8 @@ void EpubExport::doExport()
 
     exportCSS();
 
-	epub->close();
+	// epub->close();
+    delete epub; // the archive is closed by ~Zip
 }
 
 
@@ -584,7 +585,7 @@ void EpubExport::addText(PageItem* docItem)
 }
 
 /**
- * TODO: if the file is called cover.png renamed it, in order not to overwrite the generated cover
+ * TODO: if the file is called cover.png rename it, in order not to overwrite the generated cover
  */
 void EpubExport::addImage(PageItem* docItem)
 {
@@ -732,17 +733,21 @@ void EpubExport::addImage(PageItem* docItem)
         if (!usingLoadedImage)
         {
             qDebug() << "standard file add";
-            QFile file(fileinfo.filePath()); // TODO: if we already have a scimage we may have to change this
+            // QFile file(fileinfo.filePath()); // TODO: if we already have a scimage we may have to change this
             // epub->get()->add("OEBPS/"+filepath, &file, true);
             // epub->add("OEBPS/"+filepath, &file);
+            epub->add("OEBPS/"+filepath, fileinfo.filePath());
         }
         else
         {
+            // TODO: not implemented!
+            qDebug() << "implement adding the QPixMap";
             QByteArray imageBytes;
             QBuffer buffer(&imageBytes);
             buffer.open(QIODevice::WriteOnly);
             image.save(&buffer, mediaType == FormatsManager::JPEG ? "jpg" : "png");
-            epub->get()->add("OEBPS/"+filepath, imageBytes, false);
+            // epub->get()->add("OEBPS/"+filepath, imageBytes, false);
+            epub->addUncompressed("OEBPS/"+filepath, imageBytes);
 
 
         }
@@ -782,18 +787,21 @@ void EpubExport::initOfRuns(PageItem* docItem)
         lines.clear();
         QString content = docItem->itemText.text(0, docItem->itemText.length());
 
+        Mark *mark = NULL;
+
         for(int i = 0; i < n; ++i)
         {
             bool output = true;
 
             const CharStyle& style1(docItem->itemText.charStyle(i));
             const QChar ch = docItem->itemText.text(i);
-            ScText* chProperties = docItem->itemText.item(i);
-            if (chProperties->mark) {
-                Mark* footnoteCall = chProperties->mark;
-                if (footnoteCall->getType() == MARKNoteMasterType) {
-                    TextNote* footnote = chProperties->mark->getData().notePtr;
-                    qDebug() << "calling mark:" << footnoteCall->getString();
+            // ScText* chProperties = docItem->itemText.item(i);
+            // if (chProperties->mark)
+            if (docItem->itemText.hasMark(i, mark))
+            {
+                if (mark->getType() == MARKNoteMasterType) {
+                    TextNote* footnote = mark->getData().notePtr;
+                    qDebug() << "calling mark:" << mark->getString();
                     if (!footnote->saxedText().isEmpty()) {
                         StoryText footnoteText = desaxeString(doc->get(), footnote->saxedText());
                         qDebug() << "note text:" << footnoteText.text(0, footnoteText.length());
@@ -804,7 +812,7 @@ void EpubExport::initOfRuns(PageItem* docItem)
                     qDebug() << "note style:" << footnote->notesStyle()->name();
 
                     // apptend 
-                } else if (footnoteCall->getType() == MARKNoteFrameType) {
+                } else if (mark->getType() == MARKNoteFrameType) {
                 }
                 continue; // don't insert the marks as such!
             }
