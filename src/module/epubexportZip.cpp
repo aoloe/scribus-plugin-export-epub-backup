@@ -6,6 +6,8 @@
  */
 
 #include <QDebug>
+#include <QString>
+#include <QByteArray>
 #include "module/epubexportZip.h"
 
 EpubExportZip::EpubExportZip()
@@ -13,22 +15,21 @@ EpubExportZip::EpubExportZip()
 {
 }
 EpubExportZip::~EpubExportZip()
-    : ~Zip()
 {
 }
 
-void EpubExportEpub::addString(const QString& path, QByteArray& content)
+void EpubExportZip::addString(const QString& path, QByteArray& content)
 {
-    addContent(path, content, EpubExportZip::Deflate9);
+    addString(path, content, EpubExportZip::Deflate9);
 }
 
-void EpubExportEpub::addString(const QString& path, QByteArray& content, CompressionLevel level)
+void EpubExportZip::addString(const QString& path, QByteArray& content, CompressionLevel level)
 {
     // TODO: "implement addFile for QByteArray";
     qDebug() << "implement addFile for QByteArray";
 }
 
-void EpubExportEpub::addString(const QString& path, QString& content, CompressionLevel level)
+void EpubExportZip::addString(const QString& path, QString& content, CompressionLevel level)
 {
     // TODO: "implement addFile for QString";
     qDebug() << "implement addFile for QString";

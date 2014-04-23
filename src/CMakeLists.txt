@@ -11,6 +11,7 @@ SET(SCRIBUS_EPUBEXPORT_PLUGIN_MOC_CLASSES
   epubexportplugin.h
   epubexportdialog.h
   epubexport.h
+  module/epubexportZip.h
   module/epubexportEpub.h
   module/epubexportImage.h
   module/epubexportStructure.h
@@ -25,6 +26,7 @@ SET(SCRIBUS_EPUBEXPORT_PLUGIN_SOURCES
   epubexportplugin.cpp
   epubexportdialog.cpp
   epubexport.cpp
+  module/epubexportZip.cpp
   module/epubexportEpub.cpp
   module/epubexportImage.cpp
   module/epubexportStructure.cpp
