@@ -1,5 +1,9 @@
 #scribus-plugin-export-epub
 
+THIS PROJECTS IS GETTING RENAMED AND CLOSED.
+
+I'M BUILDING A NEW ONE FROM SCRATCH BY MOVING IN ONE SNIPPET AFTER THE OTHER.
+
 Epub export plugin for Scribus
 
 ## Install
