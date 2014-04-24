@@ -123,6 +123,7 @@ void EpubExport::doExport()
         if (progressDialog)
             progressDialog->setOverallTotalSteps(itemNumber);
 
+        /*
         xhtml = new EpubExportXhtml();
         xhtml->setMetadata(structure->getMetadata());
         xhtml->setTitle("title of the chapter");
@@ -136,6 +137,7 @@ void EpubExport::doExport()
             structure->setCover(doc->getCover());
             structure->addContent("cover.png", "Images/cover.png", "image/png");
         }
+        */
 
         exportXhtml();
     }
